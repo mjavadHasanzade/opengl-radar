@@ -34,11 +34,38 @@ void OpenGlCore::resizeGL(int w, int h)
 void OpenGlCore::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glColor3f(0.0f, 0.0f, 1.0f);
+    glColor3f(1.0f, 1.0f, 0.0f);
+
+
     glLineWidth(2.0f);
     glBegin(GL_LINES);
-    glVertex2f(0.0f, 0.0f);
-    glVertex2f(0.20f, 0.20f);
+        glVertex2f(0.0f, 0.0f); // starting point
+        glVertex2f(0.20f, 0.5f); // end point
+    glEnd();
+
+    glPointSize(5.5f);
+    glBegin(GL_POINTS);
+        glVertex2f(0.5f, 0.5f);
+        glVertex2f(-0.5f, 0.5f);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(0.5f, -0.5f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+        glVertex2f(0.25,0.25);
+        glVertex2f(0.35, 0.25);
+        glVertex2f(0.35, -0.25);
+        glVertex2f(0.25, -0.25);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.25, -0.25);
+    glVertex2f(-0.35, -0.45);
+        glVertex2f(-0.75, 0.25);
+    glVertex2f(0.05, 0.15);
+        glVertex2f(0.15, 0.25);
+
+
     glEnd();
 
     glColor3f(1.0f, 1.0f, 1.0f);
