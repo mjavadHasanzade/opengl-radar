@@ -1,4 +1,4 @@
-#include "openglcore.h"
+#include "headers/openglcore.h"
 #include <qmath.h>
 #include <QTimer>
 #include <QDebug>
@@ -34,7 +34,12 @@ void OpenGlCore::resizeGL(int w, int h)
 void OpenGlCore::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glLineWidth(2.0f);
+    glBegin(GL_LINES);
+    glVertex2f(0.0f, 0.0f);
+    glVertex2f(0.20f, 0.20f);
+    glEnd();
 
     glColor3f(1.0f, 1.0f, 1.0f);
     drawCircleBorder(360, 0.85);

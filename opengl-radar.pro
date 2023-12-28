@@ -11,15 +11,15 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
-    openglcore.cpp
+    sources/mainwindow.cpp \
+    sources/openglcore.cpp
 
 HEADERS += \
-    mainwindow.h \
-    openglcore.h
+    headers/mainwindow.h \
+    headers/openglcore.h
 
 FORMS += \
-    mainwindow.ui
+    forms/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
