@@ -25,7 +25,7 @@ protected:
 
     float angle = 0.0f;
 
-    void drawMovingLine(float radius);
+    void drawMovingLine(float length);
 };
 
 #endif // OPENGLCORE_H

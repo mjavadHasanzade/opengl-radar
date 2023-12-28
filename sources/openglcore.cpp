@@ -37,36 +37,19 @@ void OpenGlCore::paintGL() {
     glColor3f(1.0f, 1.0f, 0.0f);
 
 
-    glLineWidth(2.0f);
-    glBegin(GL_LINES);
+    for (float i = 0; i < 361; ++i) {
+
+        float radian=i * (M_PI / 180.0);
+        glColor3f(i>255?(i-255)/255:i/255, i>255?(i-255)/255:i/255, i>255?(i-255)/255:i/255);
+
+        glLineWidth(1.0f);
+        glBegin(GL_LINES);
         glVertex2f(0.0f, 0.0f); // starting point
-        glVertex2f(0.20f, 0.5f); // end point
-    glEnd();
-
-    glPointSize(5.5f);
-    glBegin(GL_POINTS);
-        glVertex2f(0.5f, 0.5f);
-        glVertex2f(-0.5f, 0.5f);
-        glVertex2f(-0.5f, -0.5f);
-        glVertex2f(0.5f, -0.5f);
-    glEnd();
-
-    glBegin(GL_QUADS);
-        glVertex2f(0.25,0.25);
-        glVertex2f(0.35, 0.25);
-        glVertex2f(0.35, -0.25);
-        glVertex2f(0.25, -0.25);
-    glEnd();
-
-    glBegin(GL_POLYGON);
-        glVertex2f(-0.25, -0.25);
-    glVertex2f(-0.35, -0.45);
-        glVertex2f(-0.75, 0.25);
-    glVertex2f(0.05, 0.15);
-        glVertex2f(0.15, 0.25);
+        glVertex2f(0.85 * cosf(radian), 0.85 * sinf(radian)); // end point
+        glEnd();
+    }
 
 
-    glEnd();
 
     glColor3f(1.0f, 1.0f, 1.0f);
     drawCircleBorder(360, 0.85);
@@ -117,14 +100,14 @@ void OpenGlCore::drawYAxis(float length)
     glEnd();
 }
 
-void OpenGlCore::drawMovingLine(float radius)
+void OpenGlCore::drawMovingLine(float length)
 {
     const float radian = angle * (M_PI / 180.0f);
 
     glLineWidth(2.0f);
     glBegin(GL_LINES);
     glVertex2f(0.0f, 0.0f);  // Starting point at the center of the radar
-    glVertex2f(radius * cosf(radian), radius * sinf(radian));  // Endpoint on the circle
+    glVertex2f(length * cosf(radian), length * sinf(radian));  // Endpoint on the circle
     glEnd();
 }
 
