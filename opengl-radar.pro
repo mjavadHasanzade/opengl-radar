@@ -12,11 +12,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     sources/mainwindow.cpp \
-    sources/openglcore.cpp
+    sources/openglcore.cpp \
+    sources/pythoncore.cpp
 
 HEADERS += \
     headers/mainwindow.h \
-    headers/openglcore.h
+    headers/openglcore.h \
+    headers/pythoncore.h
 
 FORMS += \
     forms/mainwindow.ui
@@ -28,4 +30,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 INCLUDEPATH += "C:/Program Files/Python312/include"
-LIBS += -L"C:/Program Files/Python312/libs"
+LIBS += -L"C:/Program Files/Python312/libs" -L"C:/Program Files/Python312" -lpython312
