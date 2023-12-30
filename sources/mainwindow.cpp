@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include "headers/openglcore.h"
 
+#pragma push_macro("slots")
+#undef slots
+#include "Python.h"
+#pragma pop_macro("slots")
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)

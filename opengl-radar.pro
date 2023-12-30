@@ -25,3 +25,7 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+INCLUDEPATH += "C:/Program Files/Python312/include"
+LIBS += -L"C:/Program Files/Python312/libs"
