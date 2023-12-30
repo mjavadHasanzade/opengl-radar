@@ -1,2 +1,3 @@
 *.user
 *.vol
+__pycache__/

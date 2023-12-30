@@ -3,16 +3,12 @@
 
 #include <QWidget>
 #include <QOpenGLWidget>
-#include <QDebug>
 
 class OpenGlCore : public QOpenGLWidget
 {
     Q_OBJECT
 public:
     explicit OpenGlCore(QWidget *parent = nullptr);
-    ~OpenGlCore(){
-        qDebug()<<"OPen dist";
-    }
     void drawXAxis(float length);
     void drawYAxis(float length);
 

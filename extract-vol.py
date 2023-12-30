@@ -19,7 +19,6 @@ class NumpyArrayEncoder(json.JSONEncoder):
 
 
 def get_json_file(volPath):
-    print(volPath)
     data = get_vol_data(volPath)
     json_data = json.dumps(data, cls=NumpyArrayEncoder)
     return json_data
