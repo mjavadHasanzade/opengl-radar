@@ -4,8 +4,8 @@
 #include "headers/pythoncore.h"
 #include <QLabel>
 #include<QHBoxLayout>
-#include<QCheckBox>
-#include<QButtonGroup>
+#include<QSpinBox>
+#include<QLabel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,32 +20,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     QHBoxLayout* mainLayout = new QHBoxLayout(this);
 
-    // Create the sidebar widget
     QWidget* sidebarWidget = new QWidget(this);
     QVBoxLayout* sidebarLayout = new QVBoxLayout(sidebarWidget);
 
-    // Create a button group for the checkboxes
-    QButtonGroup* buttonGroup = new QButtonGroup(this);
-    buttonGroup->setExclusive(true); // Make checkboxes mutually exclusive
+    QLabel *lbl=new QLabel("Elevation");
+    QSpinBox *spn=new QSpinBox(this);
 
-    // Add the checkboxes and labels to the sidebar layout and button group
-    for (int i = 0; i < py->sliceCount; i++) {
-        QHBoxLayout* checkboxLayout = new QHBoxLayout;
-        QCheckBox* checkbox = new QCheckBox;
-        checkbox->setText(QString("Checkbox %1").arg(i + 1));
+    connect(spn,&QSpinBox::valueChanged,[glw,spn](){
+        glw->updateRadar(spn->value());
+    });
 
-        checkboxLayout->addWidget(checkbox);
-        sidebarLayout->addLayout(checkboxLayout);
+    spn->setRange(0,py->sliceCount-1);
 
-        // Add the checkbox to the button group
-        buttonGroup->addButton(checkbox);
+    sidebarLayout->addWidget(lbl);
+    sidebarLayout->addWidget(spn);
+    sidebarLayout->addStretch();
 
-        connect(checkbox, &QCheckBox::clicked, [i, glw]() {
-            glw->updateRadar(i);
-        });
-    }
-
-    // Add the sidebar widget and OpenGL widget to the main layout
     mainLayout->addWidget(glw, 4);
     mainLayout->addWidget(sidebarWidget, 1);
 
