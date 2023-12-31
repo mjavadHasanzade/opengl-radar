@@ -3,69 +3,108 @@
 #include <QTimer>
 #include <QDebug>
 
-OpenGlCore::OpenGlCore(QWidget *parent) : QOpenGLWidget(parent)
+OpenGlCore::OpenGlCore(QList<uchar> data, QWidget *parent) : QOpenGLWidget(parent), mData(data)
 {
-
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
     timer->start(10);
 }
 
-
 void OpenGlCore::initializeGL()
 {
+    makeCurrent();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-
-
 }
 
 void OpenGlCore::resizeGL(int w, int h)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glViewport(0,0,w,h);
-
-    qreal aspectRatio=qreal(w)/qreal(h);
-
-    glOrtho(-1*aspectRatio,1*aspectRatio,-1,1,1,-1);
+    glViewport(0, 0, w, h);
+    qreal aspectRatio = qreal(w) / qreal(h);
+    glOrtho(-1 * aspectRatio, 1 * aspectRatio, -1, 1, 1, -1);
 }
 
-void OpenGlCore::paintGL() {
+void OpenGlCore::setGLColor(uchar number)
+{
+    if (number != 0)
+    {
+        float red = number / 255.0f;
+        float green = number / 255.0f;
+        float blue = number / 255.0f;
+        glColor3f(red, green, blue);
+    }
+    else
+    {
+        glColor3f(0.0, 0.0, 0.0);
+
+    }
+}
+
+void OpenGlCore::paintGL()
+{
     glClear(GL_COLOR_BUFFER_BIT);
+    glLineWidth(1.0f);
+    // Calculate the angle between each sector
+    float angleIncrement = 360.0f / 361;
 
-    glColor3f(1.0f, 1.0f, 0.0f);
+    // Calculate the radius of each arc segment
+    float radiusIncrement = 1.0f / 244;
+
+    for (int sector = 0; sector < mData.length()/244; ++sector)
+    {
+        // Calculate the start and end angles for the arc
+        float startAngle = sector * angleIncrement;
+        float endAngle = (sector + 1) * angleIncrement;
+
+        // Draw Bins
+        for (int line = 0; line < mData.length()/361; ++line)
+        {
+            // Get the index in the vector for the current line
+            int index = sector * 244 + line;
 
 
-    for (float i = 0; i < 361; ++i) {
+            uchar dataValue = mData.at(index);
 
-        float radian=i * (M_PI / 180.0);
-        glColor3f(i>255?(i-255)/255:i/255, i>255?(i-255)/255:i/255, i>255?(i-255)/255:i/255);
+            setGLColor(dataValue);
 
-        glLineWidth(1.0f);
-        glBegin(GL_LINES);
-        glVertex2f(0.0f, 0.0f); // starting point
-        glVertex2f(0.85 * cosf(radian), 0.85 * sinf(radian)); // end point
-        glEnd();
+
+            // Calculate the center and radius of the arc
+            float centerX = 0.0f; // Set the X coordinate of the center of the arc
+            float centerY = 0.0f; // Set the Y coordinate of the center of the arc
+            float radius = radiusIncrement * (line + 0.25f); // Calculate the radius of the current arc
+
+            // Draw the arc
+            glBegin(GL_LINE_STRIP);
+            for (float angle = startAngle; angle < endAngle; angle += 0.1f)
+            {
+                // Calculate the point on the arc
+                float x = centerX + radius * cos(angle * M_PI / 180.0f);
+                float y = centerY + radius * sin(angle * M_PI / 180.0f);
+
+                // Specify the vertex coordinate
+                glVertex2f(x, y);
+            }
+            glEnd();
+        }
     }
 
 
+    glEnd();
 
     glColor3f(1.0f, 1.0f, 1.0f);
-    drawCircleBorder(360, 0.85);
+    drawCircleBorder(360, 1);
     drawCircleBorder(360, 0.5);
     drawCircleBorder(360, 0.25);
-    drawCircleBorder(360, 0.01, true);
 
-    drawXAxis(0.95f); // Adjust the length as needed
-    drawYAxis(0.95f); // Adjust the length as needed
-    drawMovingLine(0.85);
-
+    drawXAxis(1); // Adjust the length as needed
+    drawYAxis(1); // Adjust the length as needed
+    drawMovingLine(1);
 }
 
 void OpenGlCore::drawCircleBorder(int numSegments, float radius, bool fill)
 {
-    const float theta = 2.0f * M_PI / float(numSegments);
+    const float theta = 2.0f * M_PI / numSegments;
 
     if (fill)
         glBegin(GL_TRIANGLE_FAN);
@@ -74,8 +113,8 @@ void OpenGlCore::drawCircleBorder(int numSegments, float radius, bool fill)
 
     for (int i = 0; i < numSegments; ++i)
     {
-        float x = radius * cosf(i * theta);
-        float y = radius * sinf(i * theta);
+        float x = radius * cos(i * theta);
+        float y = radius * sin(i * theta);
         glVertex2f(x, y);
     }
 
@@ -111,12 +150,9 @@ void OpenGlCore::drawMovingLine(float length)
     glEnd();
 }
 
-
 void OpenGlCore::updateAnimation()
 {
-
     float angleIncrement = 0.5;
-
     angle += angleIncrement;  // Increment the angle
 
     if (angle > 360.0f)
