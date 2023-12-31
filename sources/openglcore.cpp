@@ -3,9 +3,10 @@
 #include <QTimer>
 #include <QDebug>
 
-OpenGlCore::OpenGlCore(QList<uchar> data,int rays,int bins, QWidget *parent) :
-    QOpenGLWidget(parent), mData(data),mRays(rays),mBins(bins)
+OpenGlCore::OpenGlCore(QList<QList<uchar>> data,int rays,int bins, QWidget *parent) :
+    QOpenGLWidget(parent),mRays(rays),mBins(bins),mData(data)
 {
+    qDebug()<<rays<<bins;
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
     timer->start(10);
@@ -52,20 +53,20 @@ void OpenGlCore::paintGL()
     // Calculate the radius of each arc segment
     float radiusIncrement = 1.0f / mBins;
 
-    for (int sector = 0; sector < mData.length() / mBins; ++sector) // to get the count of sectors
+    for (int sector = 0; sector < mData[activeElevation].length() / mBins; ++sector) // to get the count of sectors
     {
         // Calculate the start and end angles for the arc
         float startAngle = sector * angleIncrement;
         float endAngle = (sector + 1) * angleIncrement;
 
         // Draw Bins
-        for (int line = 0; line < mData.length() / mRays; ++line)
+        for (int line = 0; line < mData[activeElevation].length() / mRays; ++line)
         {
             // Get the index in the vector for the current line
             int index = sector * mBins + line;
 
 
-            uchar dataValue = mData.at(index);
+            uchar dataValue = mData[activeElevation].at(index);
 
             setGLColor(dataValue);
 
@@ -159,5 +160,12 @@ void OpenGlCore::updateAnimation()
     if (movingLineAngle > 360.0f)
         movingLineAngle -= 360.0f;
 
+    update();
+}
+
+void OpenGlCore::updateRadar(int i)
+{
+    qDebug()<<"update()" <<i;
+    activeElevation=i;
     update();
 }

@@ -8,7 +8,7 @@ class OpenGlCore : public QOpenGLWidget
 {
     Q_OBJECT
 public:
-    explicit OpenGlCore(QList<uchar> data,int rays,int bins,QWidget *parent = nullptr);
+    explicit OpenGlCore(QList<QList<uchar>> data,int rays,int bins,QWidget *parent = nullptr);
     void drawXAxis(float length);
     void drawYAxis(float length);
 
@@ -16,6 +16,7 @@ signals:
 
 public slots:
     void updateAnimation();
+    void updateRadar(int i);
 
 protected:
     void initializeGL() override;
@@ -23,14 +24,14 @@ protected:
     void paintGL() override;
 
 private:
-    QList<uchar> mData;
+    QList<QList<uchar>> mData;
     void drawCircleBorder(int numSegments, float radius,bool fill=false);
     float movingLineAngle = 0.0f;
     void drawMovingLine(float length);
     void setGLColor(uchar number);
     int mRays;
     int mBins;
-
+    int activeElevation = 0;
 };
 
 #endif // OPENGLCORE_H
