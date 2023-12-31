@@ -3,7 +3,8 @@
 #include <QTimer>
 #include <QDebug>
 
-OpenGlCore::OpenGlCore(QList<uchar> data, QWidget *parent) : QOpenGLWidget(parent), mData(data)
+OpenGlCore::OpenGlCore(QList<uchar> data,int rays,int bins, QWidget *parent) :
+    QOpenGLWidget(parent), mData(data),mRays(rays),mBins(bins)
 {
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
@@ -46,22 +47,22 @@ void OpenGlCore::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
     glLineWidth(1.0f);
     // Calculate the angle between each sector
-    float angleIncrement = 360.0f / 361;
+    float angleIncrement = 360.0f / mRays;
 
     // Calculate the radius of each arc segment
-    float radiusIncrement = 1.0f / 244;
+    float radiusIncrement = 1.0f / mBins;
 
-    for (int sector = 0; sector < mData.length()/244; ++sector)
+    for (int sector = 0; sector < mData.length() / mBins; ++sector) // to get the count of sectors
     {
         // Calculate the start and end angles for the arc
         float startAngle = sector * angleIncrement;
         float endAngle = (sector + 1) * angleIncrement;
 
         // Draw Bins
-        for (int line = 0; line < mData.length()/361; ++line)
+        for (int line = 0; line < mData.length() / mRays; ++line)
         {
             // Get the index in the vector for the current line
-            int index = sector * 244 + line;
+            int index = sector * mBins + line;
 
 
             uchar dataValue = mData.at(index);
@@ -76,7 +77,7 @@ void OpenGlCore::paintGL()
 
             // Draw the arc
             glBegin(GL_LINE_STRIP);
-            for (float angle = startAngle; angle < endAngle; angle += 0.1f)
+            for (float angle = startAngle; angle < endAngle; angle += 0.2f)
             {
                 // Calculate the point on the arc
                 float x = centerX + radius * cos(angle * M_PI / 180.0f);
@@ -141,7 +142,7 @@ void OpenGlCore::drawYAxis(float length)
 
 void OpenGlCore::drawMovingLine(float length)
 {
-    const float radian = angle * (M_PI / 180.0f);
+    const float radian = movingLineAngle * (M_PI / 180.0f);
 
     glLineWidth(2.0f);
     glBegin(GL_LINES);
@@ -153,10 +154,10 @@ void OpenGlCore::drawMovingLine(float length)
 void OpenGlCore::updateAnimation()
 {
     float angleIncrement = 0.5;
-    angle += angleIncrement;  // Increment the angle
+    movingLineAngle += angleIncrement;  // Increment the angle
 
-    if (angle > 360.0f)
-        angle -= 360.0f;
+    if (movingLineAngle > 360.0f)
+        movingLineAngle -= 360.0f;
 
     update();
 }

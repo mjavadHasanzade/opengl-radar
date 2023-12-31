@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     PythonCore *py=new PythonCore("D:/tut_cpp/opengl-radar/2016042220450500dBuZ.vol","D:/tut_cpp/opengl-radar", this);
     qDebug()<<py->data[0].length();
 
-    OpenGlCore *glw=new OpenGlCore(py->data[0],this);
+    OpenGlCore *glw=new OpenGlCore(py->data[2], py->rays[0],py->bins[0],this);
     setCentralWidget(glw);
 
 }
