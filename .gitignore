@@ -1,3 +1,4 @@
 *.user
 *.vol
 __pycache__/
+.vscode/
