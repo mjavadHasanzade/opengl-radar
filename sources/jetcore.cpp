@@ -1,4 +1,4 @@
-#include "jetcore.h"
+#include "headers/jetcore.h"
 
 JetCore::JetCore(QObject *parent)
     : QObject{parent}

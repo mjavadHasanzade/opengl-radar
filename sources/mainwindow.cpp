@@ -6,6 +6,7 @@
 #include<QHBoxLayout>
 #include<QSpinBox>
 #include<QLabel>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    PythonCore *py = new PythonCore("D:/tut_cpp/opengl-radar/2022080617001200dBZ.vol", "D:/tut_cpp/opengl-radar", this);
+    PythonCore *py = new PythonCore("D:/tut_cpp/opengl-radar/2022080617001200dBZ.vol",QDir::currentPath(), this);
 //    qDebug() << py->data[activeElevation].length();
 
     OpenGlCore *glw = new OpenGlCore(py->data, py->rays[0], py->bins[0], this);
