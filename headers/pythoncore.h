@@ -19,7 +19,6 @@ class PythonCore : public QObject
     Q_OBJECT
 public:
     explicit PythonCore(QString fileName,QString execPath,QObject *parent = nullptr);
-    ~PythonCore();
     QString mFileName;QString mExecPath;
     QList<int> rays; QList<int> bins; int sliceCount; QList<QList<ushort>> startAngle; QList<QList<ushort>> stopAngle; QList<QList<uchar>> data;float angleStep;int stopRange;
 

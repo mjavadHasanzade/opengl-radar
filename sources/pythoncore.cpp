@@ -9,11 +9,6 @@ PythonCore::PythonCore(QString fileName,QString execPath,QObject *parent)
                 &rays,&bins,&sliceCount,&startAngle,&stopAngle,&data,&angleStep,&stopRange);
 }
 
-PythonCore::~PythonCore()
-{
-    Py_Finalize();
-}
-
 void PythonCore::loadVolData(QString fileName, QString execPath, QList<int> *rayS, QList<int> *binS,
                              int *slicecount, QList<QList<ushort> > *startangle, QList<QList<ushort> > *stopangle,
                              QList<QList<uchar> > *data, float *anglestep, int *stoprange)
@@ -140,5 +135,6 @@ void PythonCore::loadVolData(QString fileName, QString execPath, QList<int> *ray
     Py_DECREF(jsonFunc);
 
     qDebug() << "The slow operation took" << timer.elapsed() << "milliseconds";
+    Py_Finalize();
 
 }
