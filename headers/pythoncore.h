@@ -20,13 +20,14 @@ class PythonCore : public QObject
 public:
     explicit PythonCore(QString fileName,QString execPath,QObject *parent = nullptr);
     QString mFileName;QString mExecPath;
-    QList<int> rays; QList<int> bins; int sliceCount; QList<QList<ushort>> startAngle; QList<QList<ushort>> stopAngle; QList<QList<uchar>> data;float angleStep;int stopRange;
+    QList<int> rays; QList<int> bins; int sliceCount; QList<QList<ushort>> startAngle; QList<QList<ushort>> stopAngle;
+    QList<QList<uchar>> data;float angleStep;int stopRange; QList <float> posAngles;
 
 private:
     PyObject* pModule;
     void loadVolData(QString fileName,QString execPath, QList<int> *rayS, QList<int> *binS,
                      int *slicecount, QList<QList<ushort>> *startangle, QList<QList<ushort>> *stopangle,
-                     QList<QList<uchar>> *data,float *anglestep,int *stoprange);
+                     QList<QList<uchar>> *data,float *anglestep,int *stoprange,QList <float> *posangles);
 
 
 };

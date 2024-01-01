@@ -6,12 +6,12 @@ PythonCore::PythonCore(QString fileName,QString execPath,QObject *parent)
     Py_Initialize();
 
     loadVolData(mFileName,mExecPath,
-                &rays,&bins,&sliceCount,&startAngle,&stopAngle,&data,&angleStep,&stopRange);
+                &rays,&bins,&sliceCount,&startAngle,&stopAngle,&data,&angleStep,&stopRange,&posAngles);
 }
 
 void PythonCore::loadVolData(QString fileName, QString execPath, QList<int> *rayS, QList<int> *binS,
                              int *slicecount, QList<QList<ushort> > *startangle, QList<QList<ushort> > *stopangle,
-                             QList<QList<uchar> > *data, float *anglestep, int *stoprange)
+                             QList<QList<uchar> > *data, float *anglestep, int *stoprange,QList <float> *posangles)
 {
     QElapsedTimer timer;
     timer.start();
@@ -25,6 +25,7 @@ void PythonCore::loadVolData(QString fileName, QString execPath, QList<int> *ray
     startangle->clear();
     stopangle->clear();
     data->clear();
+    posangles->clear();
 
 
     PyObject* pSysPath = PySys_GetObject("path");
@@ -81,6 +82,7 @@ void PythonCore::loadVolData(QString fileName, QString execPath, QList<int> *ray
             binS->append(slice["slicedata"]["rawdata"]["@bins"].toString().toInt());
             rayS->append(slice["slicedata"]["rawdata"]["@rays"].toString().toInt());
             *slicecount+=1;
+            posangles->append(slice["posangle"].toString().toFloat());
 
             QList<ushort> startangleArr;
             QList<ushort> stopangleArr;
