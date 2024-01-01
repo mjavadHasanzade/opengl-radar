@@ -11,6 +11,7 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    sources/jetcore.cpp \
     sources/mainwindow.cpp \
     sources/openglcore.cpp \
     sources/pythoncore.cpp
@@ -18,7 +19,8 @@ SOURCES += \
 HEADERS += \
     headers/mainwindow.h \
     headers/openglcore.h \
-    headers/pythoncore.h
+    headers/pythoncore.h \
+    headers/jetcore.h
 
 FORMS += \
     forms/mainwindow.ui

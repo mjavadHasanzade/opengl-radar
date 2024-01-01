@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QOpenGLWidget>
+#include "headers/jetcore.h"
 
 class OpenGlCore : public QOpenGLWidget
 {

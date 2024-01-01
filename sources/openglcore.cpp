@@ -6,10 +6,10 @@
 OpenGlCore::OpenGlCore(QList<QList<uchar>> data,int rays,int bins, QWidget *parent) :
     QOpenGLWidget(parent),mRays(rays),mBins(bins),mData(data)
 {
-    qDebug()<<rays<<bins;
-    QTimer* timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
-    timer->start(10);
+//    qDebug()<<rays<<bins;
+//    QTimer* timer = new QTimer(this);
+//    connect(timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
+//    timer->start(10);
 }
 
 void OpenGlCore::initializeGL()
@@ -29,18 +29,10 @@ void OpenGlCore::resizeGL(int w, int h)
 
 void OpenGlCore::setGLColor(uchar number)
 {
-    if (number != 0)
-    {
-        float red = number / 255.0f;
-        float green = number / 255.0f;
-        float blue = number / 255.0f;
-        glColor3f(red, green, blue);
-    }
-    else
-    {
-        glColor3f(0.0, 0.0, 0.0);
+    QColor color=JetCore::getJetColor(number, 0, 255);
 
-    }
+        glColor3f(color.redF(), color.greenF() ,color.blueF());
+
 }
 
 void OpenGlCore::paintGL()
