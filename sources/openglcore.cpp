@@ -24,7 +24,7 @@ void OpenGlCore::resizeGL(int w, int h)
     glLoadIdentity();
     glViewport(0, 0, w, h);
     qreal aspectRatio = qreal(w) / qreal(h);
-    glOrtho(-1 * aspectRatio, 1 * aspectRatio, -1, 1, 1, -1);
+    glOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, 1, -1);
 }
 
 void OpenGlCore::setGLColor(uchar number)
@@ -46,18 +46,20 @@ void OpenGlCore::setGLColor(uchar number)
 void OpenGlCore::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
     glLineWidth(1.0f);
-    // Calculate the angle between each sector
+
     float angleIncrement = 360.0f / mRays;
 
-    // Calculate the radius of each arc segment
     float radiusIncrement = 1.0f / mBins;
+
+    float rotation=-90.0;
 
     for (int sector = 0; sector < mData[activeElevation].length() / mBins; ++sector) // to get the count of sectors
     {
         // Calculate the start and end angles for the arc
-        float startAngle = sector * angleIncrement;
-        float endAngle = (sector + 1) * angleIncrement;
+        float startAngle = (sector * angleIncrement)+ rotation;
+        float endAngle = ((sector + 1) * angleIncrement)+ rotation;
 
         // Draw Bins
         for (int line = 0; line < mData[activeElevation].length() / mRays; ++line)
@@ -91,16 +93,13 @@ void OpenGlCore::paintGL()
         }
     }
 
-
-    glEnd();
-
     glColor3f(1.0f, 1.0f, 1.0f);
     drawCircleBorder(360, 1);
     drawCircleBorder(360, 0.5);
     drawCircleBorder(360, 0.25);
 
-    drawXAxis(1); // Adjust the length as needed
-    drawYAxis(1); // Adjust the length as needed
+    drawXAxis(1.05); // Adjust the length as needed
+    drawYAxis(1.05); // Adjust the length as needed
     drawMovingLine(1);
 }
 
