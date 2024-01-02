@@ -6,10 +6,10 @@
 OpenGlCore::OpenGlCore(QList<QList<uchar>> data,int rays,int bins, QWidget *parent) :
     QOpenGLWidget(parent),mRays(rays),mBins(bins),mData(data)
 {
-//    qDebug()<<rays<<bins;
-//    QTimer* timer = new QTimer(this);
-//    connect(timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
-//    timer->start(10);
+    qDebug()<<rays<<bins;
+    QTimer* timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
+    timer->start(10);
 }
 
 void OpenGlCore::initializeGL()
