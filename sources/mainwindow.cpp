@@ -7,6 +7,7 @@
 #include<QSpinBox>
 #include<QLabel>
 #include <QDir>
+#include <QComboBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,17 +25,42 @@ MainWindow::MainWindow(QWidget *parent)
     QWidget* sidebarWidget = new QWidget(this);
     QVBoxLayout* sidebarLayout = new QVBoxLayout(sidebarWidget);
 
+    QComboBox *elevationCombo=new QComboBox;
     QLabel *lbl=new QLabel("Elevation");
     QSpinBox *spn=new QSpinBox(this);
+    spn->setRange(0,py->posAngles.size()-1);
 
-    connect(spn,&QSpinBox::valueChanged,[glw,spn](){
+    connect(spn,&QSpinBox::valueChanged,[glw,spn,elevationCombo](){
         glw->updateRadar(spn->value());
+
+       elevationCombo->setCurrentIndex(spn->value());
+
     });
 
-    spn->setRange(0,py->sliceCount-1);
+
+    foreach (auto item, py->posAngles) {
+        elevationCombo->addItem(QString::number(item));
+    }
+
+    connect(elevationCombo,&QComboBox::currentTextChanged,[=](){
+
+        float pos=elevationCombo->currentText().toFloat();
+        int posIndex;
+
+        for (int i = 0; i < py->posAngles.size(); ++i) {
+            if(pos==py->posAngles.at(i)){
+                posIndex=i;
+                break;
+            }
+        }
+
+        spn->setValue(posIndex);
+
+    });
 
     sidebarLayout->addWidget(lbl);
     sidebarLayout->addWidget(spn);
+    sidebarLayout->addWidget(elevationCombo);
     sidebarLayout->addStretch();
 
     mainLayout->addWidget(glw, 4);
